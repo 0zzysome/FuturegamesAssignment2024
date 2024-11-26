@@ -13,6 +13,7 @@ namespace Mechadroids {
 
         public void Initialize() {
             // initialize input here
+
         }
 
         public void SetCursorState(bool visibility, CursorLockMode lockMode) {

@@ -24,6 +24,7 @@ namespace Mechadroids {
         public void Initialize() {
             // Load resources if they are present in a /Resource folder anywhere in the project
             playerPrefabs = Resources.Load<PlayerPrefabs>("PlayerPrefabs");
+
             aISettings = Resources.Load<AISettings>("AISettings");
             uiPrefabs = Resources.Load<UIPrefabs>("UIPrefabs");
 
