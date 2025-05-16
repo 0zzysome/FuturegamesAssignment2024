@@ -1,6 +1,8 @@
 using Mechadroids.UI;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using Unity.VisualScripting;
 
 namespace Mechadroids {
     /// <summary>
@@ -11,6 +13,7 @@ namespace Mechadroids {
         public Transform playerStartPosition;
         public CinemachineCamera followCamera;
         public Transform aiParentTransform;
+
 
         private PlayerPrefabs playerPrefabs;
         private InputHandler inputHandler;
@@ -24,13 +27,15 @@ namespace Mechadroids {
         public void Initialize() {
             // Load resources if they are present in a /Resource folder anywhere in the project
             playerPrefabs = Resources.Load<PlayerPrefabs>("PlayerPrefabs");
-
+            if(playerPrefabs == null) {
+                Debug.LogError("PlayerPrefabs not found in Resources");
+            }
             aISettings = Resources.Load<AISettings>("AISettings");
             uiPrefabs = Resources.Load<UIPrefabs>("UIPrefabs");
-
             // Initialize systems
             inputHandler = new InputHandler();
             inputHandler.Initialize();
+
 
             // this define symbol, if removed from Project Settings, makes sure that in a release build this code will be stripped
 #if GAME_DEBUG
@@ -40,8 +45,9 @@ namespace Mechadroids {
             playerEntityHandler = new PlayerEntityHandler(playerPrefabs, inputHandler, playerStartPosition, followCamera, debugMenuHandler);
             playerEntityHandler.Initialize();
 
-            aiEntitiesHandler = new AIEntitiesHandler(aISettings, aiParentTransform);
-            aiEntitiesHandler.Initialize();
+
+            //aiEntitiesHandler = new AIEntitiesHandler(aISettings, aiParentTransform);
+            //aiEntitiesHandler.Initialize();
 
             // it is very important to control the initialization state to avoid running tick functions with data that is not yet initialized
             initialized = true;
@@ -52,8 +58,10 @@ namespace Mechadroids {
                 return;
             }
             playerEntityHandler.Tick();
-            aiEntitiesHandler.Tick();
+            if(aiEntitiesHandler != null) {aiEntitiesHandler.Tick();}
+
             debugMenuHandler.Tick();
+
         }
 
         public void FixedUpdate() {
@@ -61,7 +69,9 @@ namespace Mechadroids {
                 return;
             }
             playerEntityHandler.PhysicsTick();
-            aiEntitiesHandler.PhysicsTick();
+            if(aiEntitiesHandler != null) {aiEntitiesHandler.PhysicsTick();}
+            //makes enemis
+
         }
 
         public void OnDestroy() {
@@ -70,8 +80,21 @@ namespace Mechadroids {
             }
             inputHandler.Dispose();
             playerEntityHandler.Dispose();
-            aiEntitiesHandler.Dispose();
+            if(aiEntitiesHandler != null){aiEntitiesHandler.Dispose();}
             debugMenuHandler.Dispose();
         }
+
+        private void OnTriggerEnter(Collider other) {
+
+
+            Debug.Log("Player detected");
+
+            throw new System.NotImplementedException();
+        }
+        public void SetUpAIEntities() {
+            aiEntitiesHandler = new AIEntitiesHandler(aISettings, aiParentTransform);
+            aiEntitiesHandler.Initialize();
+        }
     }
+
 }

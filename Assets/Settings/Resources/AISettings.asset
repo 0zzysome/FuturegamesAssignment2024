@@ -15,7 +15,3 @@ MonoBehaviour:
   enemiesToSpawn:
   - enemySettings: {fileID: 11400000, guid: 49f2a947431da2943b50a709a5f45f46, type: 2}
     enemyCount: 1
-  - enemySettings: {fileID: 11400000, guid: f402c643ee7ef114e838cf0f05d06c8d, type: 2}
-    enemyCount: 1
-  - enemySettings: {fileID: 11400000, guid: f402c643ee7ef114e838cf0f05d06c8d, type: 2}
-    enemyCount: 1

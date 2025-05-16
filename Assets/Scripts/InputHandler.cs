@@ -13,6 +13,16 @@ namespace Mechadroids {
 
         public void Initialize() {
             // initialize input here
+            inputActions = new InputActions();
+            inputActions.Player.Enable();
+            //move if the player is using movement
+            inputActions.Player.Move.performed += ctx => MovementInput = ctx.ReadValue<Vector2>();
+            //stop if not
+            inputActions.Player.Move.canceled += ctx => MovementInput = Vector2.zero;
+
+            inputActions.Player.Look.performed += ctx => MouseDelta = ctx.ReadValue<Vector2>();
+            inputActions.Player.Look.canceled += ctx => MouseDelta = Vector2.zero;
+            inputActions.UI.Enable();
 
         }
 

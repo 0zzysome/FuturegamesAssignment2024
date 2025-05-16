@@ -20,6 +20,7 @@ namespace Mechadroids.UI {
         }
 
         private void ToggleMenu() {
+
             debugMenu.gameObject.SetActive(!debugMenu.gameObject.activeSelf);
             if(debugMenu.gameObject.activeSelf) {
                 inputHandler.SetCursorState(true, CursorLockMode.None);
@@ -32,8 +33,9 @@ namespace Mechadroids.UI {
         public void Tick() {
 
             if(inputHandler.InputActions.UI.Cancel.WasPerformedThisFrame()) {
+                   Debug.Log("Toggle menu");
                    ToggleMenu();
-                }
+            }
 
         }
 

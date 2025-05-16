@@ -1,43 +1,28 @@
 using UnityEngine;
 
 namespace Mechadroids {
-    public class EnemyIdleState : IEntityState {
+    public class EnemyPatrolState : IEntityState
+    {
         private readonly IEntityHandler entityHandler;
         private readonly EnemyReference enemyReference;
-        private float idleDuration = 2f;
-        private float idleTimer;
-
-        public EnemyIdleState(IEntityHandler entityHandler, EnemyReference enemyReference) {
+        private int currentPatrolIndex;
+        public EnemyPatrolState(IEntityHandler entityHandler, EnemyReference enemyReference) {
             this.entityHandler = entityHandler;
             this.enemyReference = enemyReference;
+            currentPatrolIndex = 0;
         }
-
         public void Enter() {
-            idleTimer = 0f;
-            // Optionally set idle animation
-        }
 
+        }
+        public void HandleInput() {
+            MoveTowardsPatrolPoint();
+        }
         public void LogicUpdate() {
-            idleTimer += Time.deltaTime;
-            if(idleTimer >= idleDuration) {
-                TransitionToPatrolState();
-            }
-        }
 
-        public void PhysicsUpdate() {
-            // No physics updates needed in idle state
         }
-
-        public void Exit() {
-            // Cleanup if necessary
-        }
-
-        private void TransitionToPatrolState() {
-            Exit();
-            entityHandler.EntityState = new EnemyPatrolState(entityHandler, enemyReference);
-            entityHandler.EntityState.Enter();
-        }
-        /*private void SetNextPatrolDestination() {
+        public void PhysicsUpdate() { }
+        public void Exit() { }
+        private void SetNextPatrolDestination() {
             if(enemyReference.enemySettings.routeSettings.routePoints.Length == 0) return;
             currentPatrolIndex %= enemyReference.enemySettings.routeSettings.routePoints.Length;
         }
@@ -60,8 +45,15 @@ namespace Mechadroids {
                 currentPatrolIndex = (currentPatrolIndex + 1) % enemyReference.enemySettings.routeSettings.routePoints.Length;
                 SetNextPatrolDestination();
             }
-        }*/
-
+        }
+        private void RotateTowards(Vector3 direction) {
+            if(direction.magnitude == 0) return;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            enemyReference.transform.rotation = Quaternion.Slerp(
+                enemyReference.transform.rotation,
+                targetRotation,
+                enemyReference.enemySettings.enemy.patrolRotationSpeed * Time.deltaTime
+            );
+        }
     }
-
 }

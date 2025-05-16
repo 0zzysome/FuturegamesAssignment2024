@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   routeId: 1
   routePoints:
-  - {x: 1, y: 0, z: 100}
-  - {x: 100, y: 0, z: 1}
-  - {x: 0, y: 0, z: 0}
+  - {x: 71.90412, y: 0.336, z: 79.29}
+  - {x: 71.90412, y: 0.336, z: 58.59}
+  - {x: 89.17, y: 0.336, z: 71.33}
